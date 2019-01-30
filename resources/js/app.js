@@ -10,8 +10,10 @@ require('./bootstrap');
 window.Vue = require('vue');
 
 import Vuetify from 'vuetify'
+import VueRouter from 'vue-router'
 
 Vue.use(Vuetify)
+Vue.use(VueRouter)
 
 import 'vuetify/dist/vuetify.min.css'
 
@@ -29,6 +31,25 @@ import 'vuetify/dist/vuetify.min.css'
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('admin', require('./components/Admin.vue').default);
 
+import Dashboard from './pages/Dashboard'
+import Settings from './pages/Settings'
+
+const routes = [
+  {
+      path: '/admin',
+      component: Dashboard
+  },
+  {
+      path: '/settings',
+      component: Settings
+  }
+];
+
+const router = new VueRouter({
+  mode: 'history',
+  routes
+})
+
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -37,5 +58,6 @@ Vue.component('admin', require('./components/Admin.vue').default);
  */
 
 const app = new Vue({
-    el: '#app'
+    el: '#app',
+    router
 });

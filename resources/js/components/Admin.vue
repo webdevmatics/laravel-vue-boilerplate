@@ -8,15 +8,15 @@
                     app
             >
                 <v-list dense>
-                    <v-list-tile @click="">
-                        <v-list-tile-action>
+                    <v-list-tile to="/admin">
+                        <v-list-tile-action >
                             <v-icon>dashboard</v-icon>
                         </v-list-tile-action>
                         <v-list-tile-content>
                             <v-list-tile-title>Dashboard</v-list-tile-title>
                         </v-list-tile-content>
                     </v-list-tile>
-                    <v-list-tile @click="">
+                    <v-list-tile  to="/settings">
                         <v-list-tile-action>
                             <v-icon>settings</v-icon>
                         </v-list-tile-action>
@@ -32,20 +32,9 @@
             </v-toolbar>
             <v-content>
                 <v-container fluid fill-height>
-                    <v-layout justify-center align-center>
+                    <v-layout justify-center >
                         <v-flex shrink>
-                            <v-tooltip right>
-                                <v-btn
-                                        icon
-                                        large
-                                        :href="source"
-                                        target="_blank"
-                                        slot="activator"
-                                >
-                                    <v-icon large>code</v-icon>
-                                </v-btn>
-                                <span>Source</span>
-                            </v-tooltip>
+                            <router-view></router-view>
                         </v-flex>
                     </v-layout>
                 </v-container>
