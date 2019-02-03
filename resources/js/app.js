@@ -33,6 +33,7 @@ Vue.component('admin', require('./components/Admin.vue').default);
 
 import Dashboard from './pages/Dashboard'
 import Settings from './pages/Settings'
+import Users from './pages/Users'
 
 const routes = [
   {
@@ -40,7 +41,11 @@ const routes = [
       component: Dashboard
   },
   {
-      path: '/settings',
+      path: '/admin/users',
+      component: Users
+  },
+  {
+      path: '/admin/settings',
       component: Settings
   }
 ];
