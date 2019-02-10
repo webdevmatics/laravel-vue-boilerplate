@@ -34,6 +34,8 @@ Vue.component('admin', require('./components/Admin.vue').default);
 import Dashboard from './pages/Dashboard'
 import Settings from './pages/Settings'
 import Users from './pages/Users'
+import Roles from './pages/Roles'
+import Permissions from './pages/Permissions'
 
 const routes = [
   {
@@ -43,6 +45,14 @@ const routes = [
   {
       path: '/admin/users',
       component: Users
+  },
+  {
+      path: '/admin/roles',
+      component: Roles
+  },
+  {
+      path: '/admin/permissions',
+      component: Permissions
   },
   {
       path: '/admin/settings',

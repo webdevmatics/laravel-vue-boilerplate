@@ -1,7 +1,7 @@
 <template>
     <div>
         <v-toolbar dark flat color="grey-lighten">
-            <v-toolbar-title>Users</v-toolbar-title>
+            <v-toolbar-title>Roles</v-toolbar-title>
             <v-divider
                     class="mx-2"
                     inset
@@ -21,37 +21,14 @@
                                 <v-flex xs12 >
                                     <v-text-field v-model="editedItem.name" label="Name"></v-text-field>
                                 </v-flex>
-                                <v-flex xs12 >
-                                    <v-text-field v-model="editedItem.email" label="Email"></v-text-field>
-                                </v-flex>
-
-                                <v-flex xs12 >
-                                    <v-text-field v-model="editedItem.password" label="password"></v-text-field>
-                                </v-flex>
-
-                                <v-flex xs12 >
-                                    <v-text-field v-model="editedItem.confirm_password" label="Confirm Password"></v-text-field>
-                                </v-flex>
-
-                                <v-flex xs12>
-                                    <h3>Roles</h3>
-                                    <v-radio-group v-model="editedItem.roleId">
-                                        <v-radio
-                                                v-for="(role,index) in allRoles"
-                                                :key="index"
-                                                :label="role.name"
-                                                :value="role.id"
-                                        ></v-radio>
-                                    </v-radio-group>
-                                </v-flex>
 
                                 <v-flex xs12>
                                     <v-select
-                                            v-model="editedItem.permissionIds"
+                                            v-model="editedItem.permissions"
                                             :items="allPermissions"
                                             label="Permissions"
                                             item-text="name"
-                                            item-value="id"
+                                            return-object
                                             multiple
                                             chips
                                     ></v-select>
@@ -76,8 +53,11 @@
         >
             <template slot="items" slot-scope="props">
                 <td>{{ props.item.name }}</td>
-                <td class="text-xs-right">{{ props.item.email }}</td>
-                <td class="text-xs-right" v-if="props.item.role">{{ props.item.role.name }}</td>
+                <td class="text-xs-right" v-if="props.item.permissions">
+                    <ul>
+                        <li v-for="permission in props.item.permissions">{{permission.name}}</li>
+                    </ul>
+                </td>
                 <td class="text-xs-right" v-else>n/a</td>
                 <td class="text-xs-right">{{ props.item.created_at }}</td>
                 <td class="justify-center layout px-0">
@@ -108,28 +88,19 @@
     data: () => ({
       dialog: false,
       headers: [
-        {text: 'Username', value: 'name'},
-        {text: 'Email', value: 'email'},
-        {text: 'Role', value: 'role'},
+        {text: 'Name', value: 'name'},
         {text: 'Created', value: 'created_at'},
         {text: 'Actions', value: 'name', sortable: false},
       ],
       tableData: [],
       editedIndex: -1,
-      allRoles:[],
       allPermissions:[],
       editedItem: {
         name: '',
-        email: '',
-        roleId: '',
-        permissionIds:[],
         created_at: '',
       },
       defaultItem: {
         name: '',
-        email: '',
-        roleId: '',
-        permissionIds:[],
         created_at: '',
       },
 
@@ -154,11 +125,10 @@
     methods: {
       initialize() {
 
-        axios.get('/api/users').then(response => {
+        axios.get('/api/roles').then(response => {
           this.tableData = response.data.data;
         });
 
-        axios.get('/api/roles').then(response=>this.allRoles=response.data.data);
         axios.get('/api/permissions').then(response=>this.allPermissions=response.data.data);
       },
 
@@ -172,7 +142,7 @@
         const index = this.tableData.indexOf(item);
         confirm('Are you sure you want to delete this item?') && this.tableData.splice(index, 1);
 
-        axios.delete('/api/users/'+item.id).then(response=>console.log(response.data))
+        axios.delete('/api/roles/'+item.id).then(response=>console.log(response.data))
 
       },
 
@@ -188,11 +158,11 @@
         if (this.editedIndex > -1) {
           Object.assign(this.tableData[this.editedIndex], this.editedItem);
 
-          axios.put('/api/users/'+this.editedItem.id,this.editedItem).then(response=>console.log(response.data));
+          axios.put('/api/roles/'+this.editedItem.id,this.editedItem).then(response=>console.log(response.data));
         } else {
           this.tableData.push(this.editedItem);
 
-          axios.post('/api/users/',this.editedItem).then(response=>console.log(response.data));
+          axios.post('/api/roles/',this.editedItem).then(response=>console.log(response.data));
         }
         this.close();
       },
