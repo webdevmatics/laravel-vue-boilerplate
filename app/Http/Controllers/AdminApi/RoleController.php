@@ -47,8 +47,8 @@ class RoleController extends Controller
             'name'=> $request->name
         ]);
 
-        if ($request->has('permissionIds')) {
-            $role->givePermissionTo($request->permissionIds);
+        if ($request->has('permissions')) {
+            $role->givePermissionTo(collect($request->permissions)->pluck('id')->toArray());
         }
 
         return response(['message'=>'Role Created']);

@@ -18,9 +18,7 @@ class UserResource extends JsonResource
 
         $additionalData = [
           'role'=> $this->roles->first(),
-          'roleId'=> $this->roles->first()->id??null,
           'permissions'=> $this->permissions,
-          'permissionIds'=> $this->permissions->pluck('id')->toArray()
         ];
 
         return array_merge($defaultData, $additionalData);

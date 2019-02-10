@@ -35,23 +35,23 @@
 
                                 <v-flex xs12>
                                     <h3>Roles</h3>
-                                    <v-radio-group v-model="editedItem.roleId">
-                                        <v-radio
-                                                v-for="(role,index) in allRoles"
-                                                :key="index"
-                                                :label="role.name"
-                                                :value="role.id"
-                                        ></v-radio>
-                                    </v-radio-group>
+                                    <v-select
+                                            v-model="editedItem.role"
+                                            :items="allRoles"
+                                            label="Roles"
+                                            item-text="name"
+                                            return-object
+                                            chips
+                                    ></v-select>
                                 </v-flex>
 
                                 <v-flex xs12>
                                     <v-select
-                                            v-model="editedItem.permissionIds"
+                                            v-model="editedItem.permissions"
                                             :items="allPermissions"
                                             label="Permissions"
                                             item-text="name"
-                                            item-value="id"
+                                            return-object
                                             multiple
                                             chips
                                     ></v-select>
@@ -121,15 +121,15 @@
       editedItem: {
         name: '',
         email: '',
-        roleId: '',
-        permissionIds:[],
+        role:{},
+        permissions:[],
         created_at: '',
       },
       defaultItem: {
         name: '',
         email: '',
-        roleId: '',
-        permissionIds:[],
+        role:{},
+        permissions:[],
         created_at: '',
       },
 

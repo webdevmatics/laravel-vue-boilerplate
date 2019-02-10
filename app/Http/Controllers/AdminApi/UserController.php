@@ -39,12 +39,13 @@ class UserController extends Controller
             'password'=> bcrypt($request->password)
         ]);
 
-        if ($request->has('roleId')) {
-            $user->assignRole($request->roleId);
+
+        if ($request->has('role')) {
+            $user->attachRoles($request->role['name']);
         }
 
-        if ($request->has('permissionIds')) {
-            $user->givePermissionTo($request->permissionIds);
+        if ($request->has('permissions')) {
+            $user->givePermissionTo(collect($request->permissions)->pluck('id')->toArray());
         }
 
         return response(['message'=>'User Created', 'user'=>$user]);
@@ -70,12 +71,12 @@ class UserController extends Controller
             'email'=> $request->email,
         ]);
 
-        if ($request->has('roleId')) {
-            $user->syncRoles($request->roleId);
+        if ($request->has('role')) {
+            $user->syncRoles($request->role['name']);
         }
 
-        if ($request->has('permissionIds')) {
-            $user->syncPermissions($request->permissionIds);
+        if ($request->has('permissions')) {
+            $user->syncPermissions(collect($request->permissions)->pluck('id')->toArray());
         }
 
         return response(['message'=>'User Updated', 'user'=>$user]);
