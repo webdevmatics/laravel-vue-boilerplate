@@ -53,13 +53,17 @@
         >
             <template slot="items" slot-scope="props">
                 <td>{{ props.item.name }}</td>
-                <td class="text-xs-right" v-if="props.item.permissions">
-                    <ul>
-                        <li v-for="permission in props.item.permissions">{{permission.name}}</li>
-                    </ul>
+                <td style="width: 40%" v-if="props.item.permissions">
+                    <v-chip
+                            small
+                            v-for="(permission,index) in props.item.permissions"
+                            color="primary" text-color="white"
+                            :key="index"
+                    >
+                        {{permission.name}}
+                    </v-chip>
                 </td>
-                <td class="text-xs-right" v-else>n/a</td>
-                <td class="text-xs-right">{{ props.item.created_at }}</td>
+                <td v-else>n/a</td>
                 <td class="justify-center layout px-0">
                     <v-icon
                             small
@@ -89,7 +93,7 @@
       dialog: false,
       headers: [
         {text: 'Name', value: 'name'},
-        {text: 'Created', value: 'created_at'},
+        {text: 'Permissions', value: 'created_at'},
         {text: 'Actions', value: 'name', sortable: false},
       ],
       tableData: [],

@@ -39,7 +39,7 @@ import Permissions from './pages/Permissions'
 
 const routes = [
   {
-      path: '/admin',
+      path: '/admin/',
       component: Dashboard
   },
   {
