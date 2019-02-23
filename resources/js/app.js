@@ -17,6 +17,11 @@ Vue.use(VueRouter)
 
 import 'vuetify/dist/vuetify.min.css'
 
+
+import Auth from './auth'
+
+Vue.prototype.$auth = new Auth(window.user);
+
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue

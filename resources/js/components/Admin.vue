@@ -20,6 +20,7 @@
 
 
                     <v-list-group
+                            v-if="$auth.can('view-usermanagement')"
                             no-action
                     >
                         <v-list-tile slot="activator">
