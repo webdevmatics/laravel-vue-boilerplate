@@ -11,8 +11,15 @@
 |
 */
 
+use App\User;
+
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::get('/mark-all-read/{user}', function (User $user) {
+    $user->unreadNotifications->markAsRead();
+    return response(['message'=>'done']);
 });
 
 Auth::routes();

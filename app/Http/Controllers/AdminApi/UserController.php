@@ -41,7 +41,7 @@ class UserController extends Controller
 
 
         if ($request->has('role')) {
-            $user->attachRoles($request->role['name']);
+            $user->assignRole($request->role['name']);
         }
 
         if ($request->has('permissions')) {

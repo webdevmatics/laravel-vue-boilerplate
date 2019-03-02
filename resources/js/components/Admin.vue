@@ -79,17 +79,20 @@
                 <v-spacer></v-spacer>
 
                 <v-menu offset-y origin="center center" class="elelvation-1" :nudge-bottom="14" transition="scale-transition">
-                    <v-btn icon flat slot="activator">
+                    <v-btn @click="markAsRead" icon flat slot="activator">
                         <v-badge color="red" overlap>
-                            <span slot="badge">3</span>
+                            <span slot="badge">{{unreadNotifications.length}}</span>
                             <v-icon medium>notifications</v-icon>
                         </v-badge>
                     </v-btn>
-                    <ul>
-                        <li>notification 1</li>
-                        <li>notification 2</li>
-                    </ul>
-                    <!--<notification-list></notification-list>-->
+
+                    <v-list>
+                        <v-list-tile  @click="" v-for="notification in allNotifications" :key="notification.id">
+                            <v-list-tile-content>
+                                <v-list-tile-title>{{notification.data.createdUser.name}} has just registered</v-list-tile-title>
+                            </v-list-tile-content>
+                        </v-list-tile>
+                    </v-list>
                 </v-menu>
                 <v-menu offset-y origin="center center" :nudge-bottom="10" transition="scale-transition">
                     <v-btn icon large flat slot="activator">
@@ -147,13 +150,34 @@
   export default {
     data: () => ({
       drawer: null,
+      allNotifications:[]
     }),
     props:['user'],
     
     methods:{
       logout() {
-        console.log('logging out');
-      }
+        axios.post('/logout').then(response => window.location.reload());
+      },
+        markAsRead(){
+          axios.get('/mark-all-read/'+this.user.id).then(response=>{
+          });
+        }
+    },
+      computed:{
+        unreadNotifications(){
+            return this.allNotifications.filter(notification=>{
+                return notification.read_at == null;
+            })
+        }
+      },
+    created() {
+        this.allNotifications = window.user.user.notifications;
+
+        Echo.private('App.User.' + this.user.id).notification((notification) => {
+
+            this.allNotifications.push(notification.notification);
+        });
+
     }
-  };
+}
 </script>
