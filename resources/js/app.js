@@ -41,6 +41,7 @@ import Settings from './pages/Settings'
 import Users from './pages/Users'
 import Roles from './pages/Roles'
 import Permissions from './pages/Permissions'
+import Activities from './pages/Activities'
 
 const routes = [
   {
@@ -62,6 +63,10 @@ const routes = [
   {
       path: '/admin/settings',
       component: Settings
+  },
+  {
+      path: '/admin/activities',
+      component: Activities
   }
 ];
 

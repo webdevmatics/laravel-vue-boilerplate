@@ -47,6 +47,14 @@ class RoleController extends Controller
             'name'=> $request->name
         ]);
 
+        activity()
+            ->performedOn(new Role())
+            ->causedBy(auth()->user())
+            ->withProperties([
+                'name'=> $request->name
+            ])
+            ->log('created');
+
         if ($request->has('permissions')) {
             $role->givePermissionTo(collect($request->permissions)->pluck('id')->toArray());
         }
@@ -71,7 +79,13 @@ class RoleController extends Controller
         $role->update([
             'name'=> $request->name,
         ]);
-
+        activity()
+            ->performedOn(new Role())
+            ->causedBy(auth()->user())
+            ->withProperties([
+                'name'=> $request->name
+            ])
+            ->log('updated');
         if ($request->has('permissions')) {
             $role->syncPermissions(collect($request->permissions)->pluck('id')->toArray());
         }

@@ -61,6 +61,15 @@
                     </v-list-group>
 
 
+                    <v-list-tile to="/admin/activities">
+                        <v-list-tile-action>
+                            <v-icon>settings</v-icon>
+                        </v-list-tile-action>
+                        <v-list-tile-content>
+                            <v-list-tile-title>Activities</v-list-tile-title>
+                        </v-list-tile-content>
+                    </v-list-tile>
+
                     <v-list-tile to="/admin/settings">
                         <v-list-tile-action>
                             <v-icon>settings</v-icon>
