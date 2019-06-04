@@ -25,7 +25,7 @@
 <body>
     <div id="app">
 
-        <Admin :user="{{auth()->user()}}"></Admin>
+        <Admin :user="{{auth()->user()->load('notifications')}}"></Admin>
     </div>
 
     <script>

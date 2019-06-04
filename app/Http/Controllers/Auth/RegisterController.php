@@ -75,7 +75,11 @@ class RegisterController extends Controller
             return $user->hasRole('Admin');
         });
 
-        Notification::send($admins, new UserRegistered($user));
+        try {
+            Notification::send($admins, new UserRegistered($user));
+        } catch(\Exception $e){
+
+        }
 
         return $user;
     }
