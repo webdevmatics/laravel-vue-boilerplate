@@ -25,8 +25,11 @@ class User extends Authenticatable
         'name', 'email', 'password',
     ];
 
-    protected static $logFillable = true;
+    protected static $logAttributes = ['name', 'email','password'];
+    protected static $logOnlyDirty = true;
 
+    protected static $logAttributesToIgnore = ['remember_token'];
+    protected static $ignoreChangedAttributes = ['remember_token'];
 
     /**
      * The attributes that should be hidden for arrays.
