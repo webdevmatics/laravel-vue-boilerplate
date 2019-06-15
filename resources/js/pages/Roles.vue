@@ -159,6 +159,7 @@
       },
 
       save() {
+        
         if (this.editedIndex > -1) {
           Object.assign(this.tableData[this.editedIndex], this.editedItem);
 
