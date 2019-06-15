@@ -166,7 +166,7 @@
         } else {
           this.tableData.push(this.editedItem);
 
-          axios.post('/api/roles/',this.editedItem).then(response=>console.log(response.data));
+          axios.post('/api/roles', this.editedItem).then(response=>console.log(response.data));
         }
         this.close();
       },
