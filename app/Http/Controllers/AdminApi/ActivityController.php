@@ -8,9 +8,14 @@ use Spatie\Activitylog\Models\Activity;
 
 class ActivityController extends Controller
 {
-    public function index()
+    public function index($userId=0)
     {
-        $activities= Activity::all()->load('causer','subject');
+        if($userId){
+            $activities = Activity::with('causer', 'subject')->where('causer_id', $userId)->get();
+
+        }else {
+            $activities = Activity::with('causer', 'subject')->get();
+        }
 
         return $activities;
     }

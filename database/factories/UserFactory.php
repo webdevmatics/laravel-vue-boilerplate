@@ -1,6 +1,7 @@
 <?php
 
 use Faker\Generator as Faker;
+use Spatie\Permission\Models\Role;
 
 /*
 |--------------------------------------------------------------------------
@@ -12,6 +13,7 @@ use Faker\Generator as Faker;
 | model instances for testing / seeding your application's database.
 |
 */
+
 
 $factory->define(App\User::class, function (Faker $faker) {
     return [
