@@ -6,6 +6,7 @@ use App\Blog;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Resources\BlogResource;
+use Illuminate\Support\Facades\Gate;
 
 class BlogController extends Controller
 {
@@ -60,6 +61,10 @@ class BlogController extends Controller
      */
     public function show(Blog $blog)
     {
+        if (Gate::denies('update-blog', $blog)) {
+            abort(401);
+        }
+        
         return new BlogResource($blog);
     }
 
@@ -74,6 +79,10 @@ class BlogController extends Controller
      */
     public function update(Request $request, Blog $blog)
     {
+        if (Gate::denies('update-blog', $blog)) {
+            abort(401);
+        }
+
         $input = $request->all();
 
         if ($request->filled('title')) {
@@ -96,6 +105,10 @@ class BlogController extends Controller
      */
     public function destroy(Blog $blog)
     {
+        if (Gate::denies('update-blog', $blog)) {
+            abort(401);
+        }
+        
         $blog->delete();
 
         return response(['message'=>'blog deleted!']);
