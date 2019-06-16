@@ -40,18 +40,9 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-    public static function boot()
+
+    public function blogs()
     {
-        parent::boot();
-
-        static::created(function($model) {
-
-//            $admins = User::all()->filter(function($user) {
-//                return $user->hasRole('Admin');
-//            });
-//
-//            Notification::send($admins, new UserRegistered($model));
-        });
-
+        return $this->hasMany(Blog::class, 'author_id');
     }
 }
