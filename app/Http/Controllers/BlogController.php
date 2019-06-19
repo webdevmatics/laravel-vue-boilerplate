@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Resources\BlogResource;
 use Illuminate\Support\Facades\Gate;
+use App\Category;
 
 class BlogController extends Controller
 {
@@ -18,7 +19,7 @@ class BlogController extends Controller
     public function index(Request $request)
     {
 
-        $blogQuery= auth()->user()->blogs()->latest();
+        $blogQuery= auth()->user()->blogs()->with('categories')->latest();
 
         if ($request->filled('status')) {
             $blogQuery->where('status', $request->status);
@@ -54,7 +55,32 @@ class BlogController extends Controller
 
        $blog = auth()->user()->blogs()->create($input);
 
-        return new BlogResource($blog);
+       if($request->filled('categories')) {
+
+            $categoryIds= $this->createCategories($request->categories);
+
+            $blog->categories()->sync($categoryIds);
+
+       }
+
+        return new BlogResource($blog->load('categories'));
+    }
+
+    public function createCategories(array $categories)
+    {
+        $ids=[];
+
+        foreach($categories as $category){
+            if(is_array($category)){
+                $ids[]= $category['id'];
+            }else {
+                $newCategory = Category::create(['name'=> $category, 'creator_id'=> auth()->id()]);
+
+                $ids[] = $newCategory->id;
+            }
+        }
+
+        return $ids;
     }
 
     /**
@@ -66,7 +92,7 @@ class BlogController extends Controller
     public function show(Blog $blog)
     {
 
-        return new BlogResource($blog);
+        return new BlogResource($blog->load('categories'));
     }
 
 
@@ -95,7 +121,14 @@ class BlogController extends Controller
 
         $blog->update($input);
 
-        return new BlogResource($blog);
+        if ($request->filled('categories')) {
+
+            $categoryIds = $this->createCategories($request->categories);
+
+            $blog->categories()->sync($categoryIds);
+        }
+
+        return new BlogResource($blog->load('categories'));
     }
 
     /**
