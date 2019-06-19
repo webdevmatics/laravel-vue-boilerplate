@@ -17,13 +17,16 @@ class BlogController extends Controller
      */
     public function index(Request $request)
     {
-        $blogsQuery= auth()->user()->blogs()->latest();
 
-        if($request->filled('status')) {
-            $blogsQuery->where('status', $request->status);
+        $blogQuery= auth()->user()->blogs()->latest();
+
+        if ($request->filled('status')) {
+            $blogQuery->where('status', $request->status);
         }
 
-        return BlogResource::collection($blogsQuery->get());
+        $blogs= $blogQuery->get();
+
+        return BlogResource::collection( $blogs);
     }
 
 
@@ -40,15 +43,16 @@ class BlogController extends Controller
             'content'=>'required'
         ]);
 
-        $input = $request->all();
+        $input= $request->all();
 
         $input['slug']= str_slug($request->title);
 
-        if($request->filled('published_at')){
+        if($request->filled('published_at')) {
             $input['published_at'] = Carbon::parse($request->published_at);
         }
 
-        $blog=auth()->user()->blogs()->create($input);
+
+       $blog = auth()->user()->blogs()->create($input);
 
         return new BlogResource($blog);
     }
@@ -61,14 +65,10 @@ class BlogController extends Controller
      */
     public function show(Blog $blog)
     {
-        if (Gate::denies('update-blog', $blog)) {
-            abort(401);
-        }
-        
+
         return new BlogResource($blog);
     }
 
-    
 
     /**
      * Update the specified resource in storage.
@@ -80,7 +80,7 @@ class BlogController extends Controller
     public function update(Request $request, Blog $blog)
     {
         if (Gate::denies('update-blog', $blog)) {
-            abort(401);
+            abort(401, "Sorry Not Authorized");
         }
 
         $input = $request->all();
@@ -88,10 +88,11 @@ class BlogController extends Controller
         if ($request->filled('title')) {
             $input['slug'] = str_slug($request->title);
         }
-        
+
         if ($request->filled('published_at')) {
             $input['published_at'] = Carbon::parse($request->published_at);
         }
+
         $blog->update($input);
 
         return new BlogResource($blog);
@@ -105,12 +106,13 @@ class BlogController extends Controller
      */
     public function destroy(Blog $blog)
     {
-        if (Gate::denies('update-blog', $blog)) {
-            abort(401);
+        if(Gate::denies('update-blog', $blog)){
+            abort(401, "Sorry Not Authorized");
         }
-        
+
         $blog->delete();
 
-        return response(['message'=>'blog deleted!']);
+        return response(['message' => 'blog deleted!']);
+
     }
 }
