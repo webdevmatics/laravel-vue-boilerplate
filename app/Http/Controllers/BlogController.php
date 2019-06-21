@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Blog;
+use App\Category;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Resources\BlogResource;
 use Illuminate\Support\Facades\Gate;
-use App\Category;
+use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\Storage;
 
 class BlogController extends Controller
 {
@@ -63,7 +65,31 @@ class BlogController extends Controller
 
        }
 
+       if($request->hasFile('featured_image')) {
+
+            $this->uploadImage($request, $blog);
+
+       }
+
         return new BlogResource($blog->load('categories'));
+    }
+
+    private function uploadImage(Request $request, Blog $blog) {
+
+        $resize = Image::make($request->file('featured_image'))->resize(800, 600)->encode('jpg');
+
+        $fileName = str_random(10) . '.jpg';
+
+        $filePath = 'featured_image/' . $fileName;
+
+        Storage::put($filePath, $resize);
+
+
+        // $filePath  = Storage::putFile('featured_image', $request->file('featured_image')); 
+
+        $blog->featured_image = $filePath;
+
+        $blog->save();
     }
 
     public function createCategories(array $categories)
@@ -127,9 +153,11 @@ class BlogController extends Controller
 
             $blog->categories()->sync($categoryIds);
         }
+       
 
         return new BlogResource($blog->load('categories'));
     }
+
 
     /**
      * Remove the specified resource from storage.
@@ -147,5 +175,15 @@ class BlogController extends Controller
 
         return response(['message' => 'blog deleted!']);
 
+    }
+
+    public function updateFeaturedImage(Request $request, Blog $blog)
+    {
+        if ($request->hasFile('featured_image')) {
+
+            $this->uploadImage($request, $blog);
+        }
+
+        return new BlogResource($blog);
     }
 }

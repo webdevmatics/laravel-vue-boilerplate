@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class BlogResource extends JsonResource
@@ -14,6 +15,10 @@ class BlogResource extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        $newValue = [
+            'featured_image'=> Storage::url($this->featured_image)
+        ];
+
+        return array_merge( parent::toArray($request), $newValue);
     }
 }
