@@ -90,9 +90,9 @@ export default {
         return notification.read_at == null;
       });
 
-    Echo.private("App.User." + this.user.id).notification(notification => {
-      this.allNotifications.unshift(notification.notification);
-    });
+    // Echo.private("App.User." + this.user.id).notification(notification => {
+    //   this.allNotifications.unshift(notification.notification);
+    // });
   }
 };
 </script>
